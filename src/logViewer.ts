@@ -8,6 +8,10 @@ export function createLogUI() {
   const container = document.createElement("div");
   container.id = "logDeck-root";
   document.body.appendChild(container);
-  console.log("rendering");
-  render(h(LogViewer), container);
+
+  // Watch for changes in the logs and re-render when updated
+  render(
+    h(LogViewer, {}),
+    container
+  );
 }

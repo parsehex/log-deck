@@ -9,7 +9,8 @@ export interface Logger {
 }
 export type LogLevel = 'log' | 'info' | 'warn' | 'error' | 'debug';
 
-const logHistory: { level: LogLevel; message: any[]; ctx?: any; timestamp: number }[] = [];
+const logHistory: { level: LogLevel; message: any[]; ctx?: any; timestamp: number, pageLoadId: string }[] = [];
+window.pageLoadId = Date.now().toString();
 
 function createLogger(moduleName?: string): Logger {
 	function logMessage(level: LogLevel, ...args: any[]) {
@@ -20,7 +21,7 @@ function createLogger(moduleName?: string): Logger {
 			ctx = args.shift()._ctx;
 		}
 
-		logHistory.push({ level, message: args, ctx, timestamp });
+		logHistory.push({ level, message: args, ctx, timestamp, pageLoadId: window.pageLoadId });
 
 		const prefix = `[${moduleName || "LogDeck"}] [${level.toUpperCase()}]`;
 		console[level]?.(prefix, ...args, ctx ? `(ctx: ${JSON.stringify(ctx)})` : "");
